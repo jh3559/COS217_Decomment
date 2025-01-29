@@ -1,0 +1,35 @@
+START (accept) <-- the start state
+   /: MAYBECOMMENT
+   ': SINGLEQUOTE
+   ": DOUBLEQUOTE
+   other:  START
+
+DOUBLEQUOTE (accept)
+    \n: DOUBLEESCAPE
+    ": START
+    other: DOUBLEQUOTE
+
+DOUBLEESCAPE (accept)
+    any: DOUBLEQUOTE
+
+SINGLEQUOTE (accept)
+    \n: SINGLEESCAPE
+    ': START
+    other: SINGLEQUOTE
+
+SINGLEESCAPE (accept)
+    any: SINGLEQUOTE
+
+MAYBECOMMENT (accept)
+   *: COMMENT
+   ': SINGLEQUOTE
+   ": DOUBLEQUOTE
+   other:  START
+   
+COMMENT (reject)
+   *:  MAYBEEND
+   other:  COMMENT
+   
+MAYBEEND (reject)
+   /: START
+   other: COMMENT
