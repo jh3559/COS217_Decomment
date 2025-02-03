@@ -24,6 +24,7 @@ MAYBECOMMENT (accept)
    *: COMMENT
    ': SINGLEQUOTE
    ": DOUBLEQUOTE
+   /: MAYBECOMMENT
    other:  START
    
 COMMENT (reject)
@@ -33,5 +34,6 @@ COMMENT (reject)
    
 MAYBEEND (reject)
    /: START
+   *: MAYBEEND
    other: COMMENT
    (\n: COMMENT but print \n)

@@ -1,27 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
+/* This program performs one of the main functions of the 
+preprocessor: removing comments in a C file */
 
 /* enum data type with all 8 states in the DFA */
 enum Statetype {START,MAYBECOMMENT,COMMENT,MAYBEEND,DOUBLEQUOTE,
 DOUBLEESCAPE,SINGLEQUOTE,SINGLEESCAPE};
 
 /* Implement the start state of the DFA, based on the current 
-character c, print c if appropriate, return the next state */
+character c, return the next state and print c if appropriate */
 enum Statetype start(int c)
 {
     if (c == '/') return MAYBECOMMENT;
-    putchar(c);
+    putchar(c); 
     if (c == '\'') return SINGLEQUOTE;
     if (c == '"') return DOUBLEQUOTE;
     return START;
 }
 
 /* Implement the maybecomment state of the DFA, based on the current 
-character c, print c if appropriate, return the next state */
+character c, return the next state and print c if appropriate */
 enum Statetype maybecomment(int c)
 {
-    if (c == '*') return COMMENT;
-    putchar('/');
+    if (c == '*') {
+        putchar(' '); /* replace with space */
+        return COMMENT;
+    }
+    putchar('/'); /* if not comment, make up the omitted / */
+    if (c == '/') return MAYBECOMMENT; /* consecutive /'s */
     putchar(c);
     if (c == '\'') return SINGLEQUOTE;
     if (c == '"') return DOUBLEQUOTE;
@@ -29,7 +35,7 @@ enum Statetype maybecomment(int c)
 }
 
 /* Implement the comment state of the DFA, based on the current 
-character c, print c if appropriate, return the next state */
+character c, return the next state and print c if appropriate */
 enum Statetype comment(int c)
 {
     if (c == '*') return MAYBEEND;
@@ -38,16 +44,17 @@ enum Statetype comment(int c)
 }
 
 /* Implement the maybeend state of the DFA, based on the current 
-character c, print c if appropriate, return the next state */
+character c, return the next state and print c if appropriate */
 enum Statetype maybeend(int c)
 {
     if (c == '/') return START;
+    if (c == '*') return MAYBEEND; /* consecutive *'s */
     if (c == '\n') putchar(c);
     return COMMENT;
 }
 
 /* Implement the doublequote state of the DFA, based on the current 
-character c, print c if appropriate, return the next state */
+character c, return the next state and print c if appropriate */
 enum Statetype doublequote(int c)
 {
     putchar(c);
@@ -57,7 +64,7 @@ enum Statetype doublequote(int c)
 }
 
 /* Implement the doubleescape state of the DFA, based on the current 
-character c, print c if appropriate, return the next state */
+character c, return the next state and print c if appropriate */
 enum Statetype doubleescape(int c)
 {
     putchar(c);
@@ -65,7 +72,7 @@ enum Statetype doubleescape(int c)
 }
 
 /* Implement the singlequote state of the DFA, based on the current 
-character c, print c if appropriate, return the next state */
+character c, return the next state and print c if appropriate */
 enum Statetype singlequote(int c)
 {
     putchar(c);
@@ -75,11 +82,11 @@ enum Statetype singlequote(int c)
 }
 
 /* Implement the singleescape state of the DFA, based on the current 
-character c, print c if appropriate, return the next state */
+character c, return the next state and print c if appropriate */
 enum Statetype singleescape(int c)
 {
     putchar(c);
-    return SINGLEESCAPE;
+    return SINGLEQUOTE;
 }
 
 /* Read from stdin until the end, switch state according to the DFA 
