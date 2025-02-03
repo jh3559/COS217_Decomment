@@ -93,7 +93,7 @@ enum Statetype singleescape(int c)
 and print a file with all comments removed, prints to stderr and return 
 EXIT_FAILURE if there is an unterminated comment, otherwise return 0 */
 int main(void){
-    int errorline; /* keep track of potential error line number */
+    int errorline = 1; /* keep track of potential error line number */
     int currentline = 1; /* keep track of the number of lines read */
     int c; 
     enum Statetype state = START; 
