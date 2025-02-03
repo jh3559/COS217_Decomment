@@ -71,7 +71,7 @@ int main(void){
     int c;
     enum Statetype state = START;
     while (c = getchar() != EOF) {
-        if (c == '\\') currentline += 1;
+        if (c == '\n') currentline += 1;
         switch (state) {
             case START:
                 state = start(c);
