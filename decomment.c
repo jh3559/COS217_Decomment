@@ -97,7 +97,7 @@ int main(void){
     int currentline = 0; /* keep track of the number of lines read */
     int c; 
     enum Statetype state = START; 
-    while (c = getchar() != EOF) {
+    while ((c = getchar()) != EOF) {
         if (c == '\n') currentline += 1; /* increment if a new line */
         switch (state) {
             case START:
@@ -130,7 +130,7 @@ int main(void){
         }
     }
     if (state == COMMENT || state == MAYBEEND) {
-        fprintf(stderr, "Error: line %d: unterminated comment%n", 
+        fprintf(stderr, "Error: line %d: unterminated comment\n", 
         errorline);
         return EXIT_FAILURE;
     }
