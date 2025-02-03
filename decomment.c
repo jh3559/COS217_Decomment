@@ -134,5 +134,7 @@ int main(void){
         errorline);
         return EXIT_FAILURE;
     }
+    /* add missing / if ends at MAYBECOMMENT state */
+    if (state == MAYBECOMMENT) putchar('/');
     return 0;
 }
