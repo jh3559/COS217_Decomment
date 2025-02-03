@@ -5,7 +5,7 @@ START (accept) <-- the start state
    other:  START
 
 DOUBLEQUOTE (accept)
-    \n: DOUBLEESCAPE
+    \: DOUBLEESCAPE
     ": START
     other: DOUBLEQUOTE
 
@@ -13,7 +13,7 @@ DOUBLEESCAPE (accept)
     any: DOUBLEQUOTE
 
 SINGLEQUOTE (accept)
-    \n: SINGLEESCAPE
+    \: SINGLEESCAPE
     ': START
     other: SINGLEQUOTE
 
@@ -29,7 +29,9 @@ MAYBECOMMENT (accept)
 COMMENT (reject)
    *:  MAYBEEND
    other:  COMMENT
+   (\n: COMMENT but print \n)
    
 MAYBEEND (reject)
    /: START
    other: COMMENT
+   (\n: COMMENT but print \n)
