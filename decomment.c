@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* enum data type with all 8 states in the DFA*/
 enum Statetype {START,MAYBECOMMENT,COMMENT,MAYBEEND,DOUBLEQUOTE,
 DOUBLEESCAPE,SINGLEQUOTE,SINGLEESCAPE};
 
+/* Implement the start state of the DFA, based on the current 
+character c, print c if appropriate, return the next state */
 enum Statetype start(int c)
 {
     if (c == '/') return MAYBECOMMENT;
@@ -13,6 +16,8 @@ enum Statetype start(int c)
     return START;
 }
 
+/* Implement the maybecomment state of the DFA, based on the current 
+character c, print c if appropriate, return the next state */
 enum Statetype maybecomment(int c)
 {
     if (c == '*') return COMMENT;
@@ -23,6 +28,8 @@ enum Statetype maybecomment(int c)
     return START;
 }
 
+/* Implement the comment state of the DFA, based on the current 
+character c, print c if appropriate, return the next state */
 enum Statetype comment(int c)
 {
     if (c == '*') return MAYBEEND;
@@ -30,6 +37,8 @@ enum Statetype comment(int c)
     return COMMENT;
 }
 
+/* Implement the maybeend state of the DFA, based on the current 
+character c, print c if appropriate, return the next state */
 enum Statetype maybeend(int c)
 {
     if (c == '/') return START;
@@ -37,6 +46,8 @@ enum Statetype maybeend(int c)
     return COMMENT;
 }
 
+/* Implement the doublequote state of the DFA, based on the current 
+character c, print c if appropriate, return the next state */
 enum Statetype doublequote(int c)
 {
     putchar(c);
@@ -45,12 +56,16 @@ enum Statetype doublequote(int c)
     return DOUBLEQUOTE;
 }
 
+/* Implement the doubleescape state of the DFA, based on the current 
+character c, print c if appropriate, return the next state */
 enum Statetype doubleescape(int c)
 {
     putchar(c);
     return DOUBLEQUOTE;
 }
 
+/* Implement the singlequote state of the DFA, based on the current 
+character c, print c if appropriate, return the next state */
 enum Statetype singlequote(int c)
 {
     putchar(c);
@@ -59,25 +74,32 @@ enum Statetype singlequote(int c)
     return SINGLEQUOTE;
 }
 
+/* Implement the singleescape state of the DFA, based on the current 
+character c, print c if appropriate, return the next state */
 enum Statetype singleescape(int c)
 {
     putchar(c);
     return SINGLEESCAPE;
 }
 
+/* Read from stdin until the end, switch state according to the DFA 
+and print character if appropriate, prints to stderr and return 
+EXIT_FAILURE if there is an unterminated comment, otherwise return 0 */
 int main(void){
-    int errorline = 0;
-    int currentline = 0;
-    int c;
-    enum Statetype state = START;
+    int errorline = 0; /* keep track of potential error line number */
+    int currentline = 0; /* keep track of the number of lines read */
+    int c; 
+    enum Statetype state = START; 
     while (c = getchar() != EOF) {
-        if (c == '\n') currentline += 1;
+        if (c == '\n') currentline += 1; /* increment if a new line */
         switch (state) {
             case START:
                 state = start(c);
                 break;
             case MAYBECOMMENT:
                 state = maybecomment(c);
+                /* if a new comment, update the potential error line 
+                number to the current line number */
                 if (state == COMMENT) errorline = currentline;
                 break;
             case COMMENT:
@@ -101,7 +123,8 @@ int main(void){
         }
     }
     if (state == COMMENT || state == MAYBEEND) {
-        fprintf(stderr, "Error: line %d: unterminated comment%n", errorline);
+        fprintf(stderr, "Error: line %d: unterminated comment%n", 
+        errorline);
         return EXIT_FAILURE;
     }
     return 0;
