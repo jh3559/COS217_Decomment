@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* enum data type with all 8 states in the DFA*/
+/* enum data type with all 8 states in the DFA */
 enum Statetype {START,MAYBECOMMENT,COMMENT,MAYBEEND,DOUBLEQUOTE,
 DOUBLEESCAPE,SINGLEQUOTE,SINGLEESCAPE};
 
