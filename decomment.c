@@ -94,7 +94,7 @@ and print a file with all comments removed, return EXIT_FAILURE if
 there is an unterminated comment and prints the line where it started,
  otherwise return 0 */
 int main(void){
-    int errorline = 1; /* keep track of potential error line number */
+    int errorline; /* keep track of potential error line number */
     int currentline = 1; /* keep track of the number of lines read */
     int c; 
     enum Statetype state = START; 
