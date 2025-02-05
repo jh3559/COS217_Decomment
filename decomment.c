@@ -90,8 +90,9 @@ enum Statetype singleescape(int c)
 }
 
 /* Read from stdin until the end, switch state according to the DFA 
-and print a file with all comments removed, prints to stderr and return 
-EXIT_FAILURE if there is an unterminated comment, otherwise return 0 */
+and print a file with all comments removed, return EXIT_FAILURE if 
+there is an unterminated comment and prints the line where it started,
+ otherwise return 0 */
 int main(void){
     int errorline = 1; /* keep track of potential error line number */
     int currentline = 1; /* keep track of the number of lines read */
